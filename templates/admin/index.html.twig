@@ -1,20 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}Administration du site{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
+
+    <h1>Hello Administrateur! ✅</h1>
+
+<div>
     <ul>
-        <li>Your controller at <code><a href="{{ 'I:/wamp64/www/TP/ProjetSymfony/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'I:/wamp64/www/TP/ProjetSymfony/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
+        <li><a href="{{ path('campus_index') }}">Accès Campus</a></li>
+        <li><a href="">Accès Etat</a></li>
+        <li><a href="">Accès Lieu</a></li>
+        <li><a href="">Accès Participant</a></li>
+        <li><a href="">Accès Sortie</a></li>
+        <li><a href="">Accès Ville</a></li>
+        <li><a href="">Accès Securité</a></li>
     </ul>
+
+
+
 </div>
+
 {% endblock %}
