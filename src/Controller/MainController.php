@@ -13,18 +13,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("accueil/deconecte", name="")
+     * @Route("", name="accueil_deconecte")
      */
     public function accueilDeconnecte(): Response
     {
-
-
         return $this->render('main/accueil/deconecte.html.twig', [
 
         ]);
     }
     /**
-     * @Route("accueil/conecte", name="")
+     * @Route("accueil/conecte", name="accueil_conecte")
      */
     public function accueilConnecte(): Response
     {
