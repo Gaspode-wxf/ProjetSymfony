@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,11 +20,13 @@ class SortieType extends AbstractType
             ->add('dateLimiteInscription')
             ->add('nbInscriptionsMax')
             ->add('infosSortie')
-            ->add('participants')
-            ->add('organisateur')
-            ->add('siteOrganisateur')
-            ->add('lieu')
-            ->add('etat')
+//            ->add('organisateur')
+//            ->add('siteOrganisateur')
+//            ->add('lieu')
+            ->add('etat', EntityType::class, [
+        'class' => Etat::class,
+        'choice_label' => 'libelle',
+    ])
         ;
     }
 
