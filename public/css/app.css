@@ -7,7 +7,7 @@ img {
 
 }
 
-header {
+header, footer {
     background-color: #134A7F ;
     text-align: center;
     font-family: 'Comfortaa', cursive;
@@ -42,4 +42,10 @@ nav ul {
  #logo {
      flex: 1 1 40rem;
 
+ }
+
+ footer {
+     color: white;
+     margin: auto;
+     padding: 2rem;
  }
