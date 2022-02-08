@@ -5,14 +5,18 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=yes, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <title>Projet Symfony</title>
 </head>
 <body>
 <div class="container">
     <header>
-        <h1><a href="{{ path("main_accueil_deconecte") }}"><img src="{{ asset("image/logoEni.jpg") }}" alt="Sortir.com"></a></h1>
+        <h1 id="logo"><a href="{{ path("main_accueil_deconecte") }}"><img src="{{ asset("image/logoEni.png") }}" alt="Sortir.com"></a></h1>
         <h1>Sortir.com</h1>
-        {% include ("inc/nav.html.twig") %}
+       {% include ("inc/nav.html.twig") %}
     </header>
 </div>
 
