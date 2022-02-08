@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,11 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager)
     {
         $this->urlGenerator = $urlGenerator;
     }
+
 
     public function authenticate(Request $request): Passport
     {
@@ -43,6 +45,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
@@ -50,12 +53,21 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('main_AccueilCo'));
+        return new RedirectResponse($this->urlGenerator->generate('main_accueil_conecte'));
 
     }
+
 
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+  //  public function supports(Request $request): bool
+    //{
+      //  return self::LOGIN_ROUTE === $request->attributes->get('_route')
+        //    && $request->isMethod('POST');
+   // }
+
+
+
 }
