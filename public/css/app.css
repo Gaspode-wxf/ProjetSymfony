@@ -11,20 +11,19 @@ header, footer {
     background-color: #134A7F ;
     text-align: center;
     font-family: 'Comfortaa', cursive;
+    color : white;
 
 }
 a {
     text-decoration: none;
-    color: white;
+
 
 }
 ul {
     list-style-type: none;
 }
 
-h1 {
-    color: #DDDDDD;
-}
+
 nav {
     min-height: 10vh;
     display: flex;
@@ -32,12 +31,15 @@ nav {
     margin: auto;
     padding: 2rem;
 
+
 }
 nav ul {
     display: flex;
     flex: 1 1 40rem;
     justify-content: space-around;
     align-items: center;
+
+
 }
  #logo {
      flex: 1 1 40rem;
@@ -48,4 +50,7 @@ nav ul {
      color: white;
      margin: auto;
      padding: 2rem;
+ }
+ #lien {
+    color: white;
  }
