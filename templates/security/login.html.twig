@@ -5,7 +5,7 @@
 {% block body %}
 <div class="mb-2">
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger">{{ error.messageKey }}</div>
     {% endif %}
 
     <form class="container grid place-content-center bg-neutral rounded-box p-4" action="{{ path('app_login') }}" method="post">
@@ -21,9 +21,15 @@
     <label for="inputPassword">Mot de Passe</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
-    <input type="hidden" name="_csrf_token"
+       <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
+        <label>
+            <input type="checkbox" name="_remember_me" />
+            Se souvenir de moi
+        </label>
+
+
 
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
