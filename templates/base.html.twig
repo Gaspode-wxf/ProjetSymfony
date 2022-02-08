@@ -8,24 +8,28 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+   {# <link rel="stylesheet" href="{{ asset('css/app.css') }}">#}
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.25.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
     <title>Projet Symfony</title>
 </head>
-<body>
-<div class="container">
-    <header>
-        <h1 id="logo"><a href="{{ path("main_accueil_deconecte") }}"><img src="{{ asset("image/logoEni.png") }}" alt="Sortir.com"></a></h1>
-        <h1>Sortir.com</h1>
+<body class="container m-10">
+
+    <header class="container mb-2 rounded-box ">
+        <div class="container mb-2 flex items-center rounded-box">
+        <a class="flex w-1/5 " href="{{ path("main_accueil_deconecte") }}"><img src="{{ asset("image/logoEni.png") }}" alt="Sortir.com"></a>
+        <h1 class="text-7xl w-4/5 text-center ">Sortir.com</h1>
+        </div>
        {% include ("inc/nav.html.twig") %}
     </header>
-</div>
+
 
 {% block body %}
     Placeholder
 {% endblock %}
 
 
-<footer>
+<footer class="footer footer-center bg-base-300 rounded-box">
     <div>{{ "now" | date("Y") }} Sortir.com</div>
 </footer>
 
