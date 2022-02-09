@@ -24,10 +24,12 @@ class SortieRepository extends ServiceEntityRepository
       * @return Sortie[] Returns an array of Sortie objects
       */
 
-    public function listeSortiesOuvertes($number)
+    public function listeSortiesOuvertes()
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.etat = $number')
+            ->andWhere('s.etat = 5')
+            ->orWhere('s.etat = 4')
+            ->orWhere('s.etat = 3')
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
