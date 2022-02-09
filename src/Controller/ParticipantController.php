@@ -77,6 +77,25 @@ class ParticipantController extends AbstractController
             'form' => $form,
         ]);
     }
+    /**
+     * @Route("/{id}/modifier", name="participant_modifier", methods={"GET", "POST"})
+     */
+    public function modifier(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ParticipantType::class, $participant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('participant/modifierSonProfil.html.twig', [
+            'participant' => $participant,
+            'form' => $form,
+        ]);
+    }
 
     /**
      * @Route("/{id}", name="participant_delete", methods={"POST"})

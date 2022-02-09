@@ -10,7 +10,7 @@
         <a class="btn-sm" id="lien" href="{{ path('admin_index') }}" title="Accès Admin">ROLE_ADMIN - Accès Admin</a>
         {% if app.user %}
                 <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
-                <a class="btn-sm" id="lien" href="{{ path('participant_edit',{'id':app.user.id}) }}" title="modifier profil">ROLE_USER - Modifier profil</a>
+                <a class="btn-sm" id="lien" href="{{ path('participant_modifier',{'id':app.user.id}) }}" title="modifier profil">ROLE_USER - Modifier profil</a>
                 <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">ROLE_USER - Créer une sortie</a>
                 <a class="btn-sm" id="lien" href="{{ path('main_accueil_conecte') }}" title="AccueilCo">TEMP - Vue Accueil Connecté / Visualisation custom des sorties</a>
         {% endif %}

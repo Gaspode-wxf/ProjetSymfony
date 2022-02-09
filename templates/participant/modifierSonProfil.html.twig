@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier son profil{% endblock %}
+
+{% block body %}
+    <h1 class="text-3xl text-center mb-10">Modifiez votre profil</h1>
+
+    {{ include('participant/_formEditerSonProfil.html.twig', {'button_label': 'Update'}) }}
+
+
+{% endblock %}

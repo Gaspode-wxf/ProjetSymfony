@@ -22,6 +22,7 @@ class RegistrationFormType extends AbstractType
             ->add('email')
             ->add('nom')
             ->add('prenom')
+
             ->add('telephone')
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
