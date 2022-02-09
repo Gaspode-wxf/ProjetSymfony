@@ -6,6 +6,7 @@ use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,6 +46,9 @@ class SortieController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            $sortie->setOrganisateur($this->getUser());
+            $sortie->setSiteOrganisateur($user->getCampus());
             $entityManager->persist($sortie);
             $entityManager->flush();
 

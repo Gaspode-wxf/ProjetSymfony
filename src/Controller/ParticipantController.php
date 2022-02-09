@@ -36,6 +36,7 @@ class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager->persist($participant);
             $entityManager->flush();
 
