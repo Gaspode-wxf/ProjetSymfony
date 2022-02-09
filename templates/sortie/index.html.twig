@@ -3,43 +3,54 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block body %}
-    <h1>Sortie index</h1>
+    <h1>Accueil</h1>
+    
+    <label>
+        <input type="checkbox" />
+        Sorties dont je suis l'organisateur/trice<br >
+        <input type="checkbox"/>
+        Sorties auxquelles je suis inscrit/e<br >
+        <input type="checkbox"/>
+        Sorties auxquelles je ne suis pas inscrit/e<br >
+        <input type="checkbox"/>
+        Sorties passées<br >
+    </label>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>DateHeureDebut</th>
-                <th>Duree</th>
-                <th>DateLimiteInscription</th>
-                <th>NbInscriptionsMax</th>
-                <th>InfosSortie</th>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>clôture</th>
+                <th>Inscrits/Places</th>
+                <th>Etat</th>
+                <th>Organisateur</th>
+                <th>Infos Sortie</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for sortie in sorties %}
             <tr>
-                <td>{{ sortie.id }}</td>
                 <td>{{ sortie.nom }}</td>
                 <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.duree }}</td>
                 <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
+                <td>{# {{ sortie.participants.nom }}/ #}{{ sortie.nbInscriptionsMax }}</td>
+                <td>{{ sortie.etat.libelle }}</td>
+                <td>{{ sortie.organisateur.nom}}</td>
+                {# Afficher ok si la personne est inscrite #}
                 <td>{{ sortie.infosSortie }}</td>
                 <td>
                     <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
-                    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">edit</a>
+                    <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Aucune sortie trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('sortie_new') }}">Create new</a>
+    <button class="btn"><a href="{{ path('sortie_new') }}">Créer une nouvelle sortie</a></button>
 {% endblock %}
