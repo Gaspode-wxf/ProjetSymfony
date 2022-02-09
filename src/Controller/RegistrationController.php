@@ -31,6 +31,7 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setPseudo($user->getEmail());
+            $user->setActif(true);
 
             $entityManager->persist($user);
             $entityManager->flush();
