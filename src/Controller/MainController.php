@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,10 +27,6 @@ class MainController extends AbstractController
      */
     public function accueilConnecte(): Response
     {
-
-
-        return $this->render('main/accueil/conecte.html.twig', [
-
-        ]);
+        return $this->redirectToRoute('sortie_accueil');
     }
 }

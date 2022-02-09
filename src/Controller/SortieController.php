@@ -25,6 +25,15 @@ class SortieController extends AbstractController
             'sorties' => $sortieRepository->findAll(),
         ]);
     }
+    /**
+     * @Route("/", name="sortie_accueil", methods={"GET"})
+     */
+    public function accueil(SortieRepository $sortieRepository): Response
+    {
+        return $this->render('sortie/accueil.html.twig', [
+            'sorties' => $sortieRepository->findAll(),
+        ]);
+    }
 
     /**
      * @Route("/new", name="sortie_new", methods={"GET", "POST"})

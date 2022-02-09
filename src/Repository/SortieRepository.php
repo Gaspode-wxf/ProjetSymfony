@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,22 +20,31 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    // /**
-    //  * @return Sortie[] Returns an array of Sortie objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Sortie[] Returns an array of Sortie objects
+      */
+
+    public function listeSortiesOuvertes($number)
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('s.etat = $number')
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+public function listeSortieParEtat(Etat $etat)
+{
+    return $this->createQueryBuilder('s')
+        ->andWhere('s.etat = $etat')
+        ->orderBy('s.id', 'ASC')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->getResult()
+        ;
+}
 
     /*
     public function findOneBySomeField($value): ?Sortie
