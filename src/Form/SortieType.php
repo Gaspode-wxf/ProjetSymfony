@@ -22,7 +22,7 @@ class SortieType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ])
-//            ->add('duree')
+            ->add('duree')
             ->add('dateLimiteInscription', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
