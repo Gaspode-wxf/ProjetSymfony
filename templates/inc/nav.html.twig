@@ -1,18 +1,18 @@
 <nav class="navbar shadow-lg bg-base-300 text-neutral-content rounded-box justify-around ">
 
         <a class="btn-sm" id="lien" href="{{ path('app_login') }}" title="TEMP - Vue Accueil Deconnecte / Page de connexion">Accueil</a>
-        <a class="btn-sm" id="lien" href="{{ path('main_accueil_conecte') }}" title="AccueilCo">TEMP - Vue Accueil Connecté / Visualisation custom des sorties</a>
 
 
-        <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">ROLE_USER - Créer une sortie</a>
-        <a class="btn-sm" id="lien" href="{{ path('participant_edit',{'id':app.user.id}) }}" title="modifier profil">ROLE_USER - Modifier profil</a>
 
         <a class="btn-sm" id="lien" href="{{ path('ville_new') }}" title="aouter ville">ROLE_ADMIN - Villes</a>
         <a class="btn-sm" id="lien" href="{{ path('campus_new') }}" title="ajouter campus">ROLE_ADMIN - Campus</a>
         <a class="btn-sm" id="lien" href="{{ path('app_register') }}" title="ajouter utilisateur">ROLE_ADMIN - Inscrire utilisateur</a>
         <a class="btn-sm" id="lien" href="{{ path('admin_index') }}" title="Accès Admin">ROLE_ADMIN - Accès Admin</a>
         {% if app.user %}
-        <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
+                <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
+                <a class="btn-sm" id="lien" href="{{ path('participant_edit',{'id':app.user.id}) }}" title="modifier profil">ROLE_USER - Modifier profil</a>
+                <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">ROLE_USER - Créer une sortie</a>
+                <a class="btn-sm" id="lien" href="{{ path('main_accueil_conecte') }}" title="AccueilCo">TEMP - Vue Accueil Connecté / Visualisation custom des sorties</a>
         {% endif %}
 
 </nav>
