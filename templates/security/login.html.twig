@@ -11,7 +11,7 @@
     <form class="container grid place-content-center bg-neutral rounded-box p-4" action="{{ path('app_login') }}" method="post">
           {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            Vous êtes connecté en tant que {{ app.user.pseudo }}
         </div>
     {% endif %}
 

@@ -18,9 +18,7 @@ class MainController extends AbstractController
      */
     public function accueilDeconnecte(): Response
     {
-        return $this->render('main/accueil/deconecte.html.twig', [
-
-        ]);
+        return $this->redirectToRoute('app_login');
     }
     /**
      * @Route("accueil/conecte", name="accueil_conecte")

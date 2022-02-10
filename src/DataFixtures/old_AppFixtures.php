@@ -12,7 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\Participant;
 use Faker;
 
-class AppFixtures extends Fixture
+class old_AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -87,7 +87,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         // Création de 4 états
-        $libelles = ['En création', 'Clôturée', 'Ouverte', 'Activité en cours', 'Annulée', 'Activité terminée', 'Activité historisée'];
+        $libelles = ['En création', 'Ouverte', 'Clôturée', 'Activité en cours', 'Annulée', 'Activité terminée', 'Activité historisée'];
 
         $etat = [];
 
