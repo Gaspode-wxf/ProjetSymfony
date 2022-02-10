@@ -13,12 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/sortie")
+ * @Route("/sortie", name="sortie_")
  */
 class SortieController extends AbstractController
 {
     /**
-     * @Route("/", name="sortie_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(SortieRepository $sortieRepository): Response
     {
@@ -27,17 +27,17 @@ class SortieController extends AbstractController
         ]);
     }
     /**
-     * @Route("/", name="sortie_accueil", methods={"GET"})
+     * @Route("/admin", name="admin", methods={"GET"})
      */
     public function accueil(SortieRepository $sortieRepository): Response
     {
-        return $this->render('sortie/accueil.html.twig', [
+        return $this->render('sortie/admin.html.twig', [
             'sorties' => $sortieRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="sortie_new", methods={"GET", "POST"})
+     * @Route("/new", name="new", methods={"GET", "POST"})
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -62,7 +62,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="sortie_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(Sortie $sortie): Response
     {
@@ -72,7 +72,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="sortie_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
@@ -92,7 +92,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="sortie_delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
