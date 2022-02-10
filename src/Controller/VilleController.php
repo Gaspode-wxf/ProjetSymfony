@@ -16,15 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class VilleController extends AbstractController
 {
-    /**
-     * @Route("/", name="ville_index", methods={"GET"})
-     */
-    public function index(VilleRepository $villeRepository): Response
-    {
-        return $this->render('ville/index.html.twig', [
-            'villes' => $villeRepository->findAll(),
-        ]);
-    }
+
 
     /**
      * @Route("/new", name="ville_new", methods={"GET", "POST"})
@@ -39,7 +31,7 @@ class VilleController extends AbstractController
             $entityManager->persist($ville);
             $entityManager->flush();
 
-            return $this->redirectToRoute('ville_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_ville_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('ville/new.html.twig', [
@@ -48,46 +40,5 @@ class VilleController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="ville_show", methods={"GET"})
-     */
-    public function show(Ville $ville): Response
-    {
-        return $this->render('ville/show.html.twig', [
-            'ville' => $ville,
-        ]);
-    }
 
-    /**
-     * @Route("/{id}/edit", name="ville_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(VilleType::class, $ville);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('ville_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('ville/edit.html.twig', [
-            'ville' => $ville,
-            'form' => $form,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="ville_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$ville->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($ville);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('ville_index', [], Response::HTTP_SEE_OTHER);
-    }
 }

@@ -16,19 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ParticipantController extends AbstractController
 {
-    /**
-     * @Route("/", name="participant_index", methods={"GET"})
-     */
-    public function index(ParticipantRepository $participantRepository): Response
-    {
-        return $this->render('participant/index.html.twig', [
-            'participants' => $participantRepository->findAll(),
-        ]);
-    }
 
-    /**
+
+/*
+ *
+ * Personne ne peut créer de participants. Methode en commentaires pour archive
+
      * @Route("/new", name="participant_new", methods={"GET", "POST"})
-     */
+
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $participant = new Participant();
@@ -47,7 +42,10 @@ class ParticipantController extends AbstractController
             'participant' => $participant,
             'form' => $form,
         ]);
-    }
+    }*/
+
+
+    //accessible à tous les user connectés
 
     /**
      * @Route("/{id}", name="participant_show", methods={"GET"})
@@ -59,30 +57,21 @@ class ParticipantController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="participant_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ParticipantType::class, $participant);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
 
-            return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
-        }
 
-        return $this->renderForm('participant/edit.html.twig', [
-            'participant' => $participant,
-            'form' => $form,
-        ]);
-    }
+    //accessible uniquement par l'utilisateur en question
+
     /**
      * @Route("/{id}/modifier", name="participant_modifier", methods={"GET", "POST"})
      */
     public function modifier(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
     {
+        if ($participant->getId() != $this->getUser()->getId())
+        {
+            return $this->redirectToRoute('sortie_index');
+        }else
+
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
@@ -92,22 +81,15 @@ class ParticipantController extends AbstractController
             return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('participant/modifierSonProfil.html.twig', [
-            'participant' => $participant,
-            'form' => $form,
-        ]);
+
+
+            return $this->renderForm('participant/modifierSonProfil.html.twig', [
+                'participant' => $participant,
+                'form' => $form,
+
+            ]);
+
+
     }
 
-    /**
-     * @Route("/{id}", name="participant_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($participant);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
-    }
 }

@@ -26,15 +26,7 @@ class SortieController extends AbstractController
             'sorties' => $sortieRepository->listeSortiesOuvertes(),
         ]);
     }
-    /**
-     * @Route("/admin", name="admin", methods={"GET"})
-     */
-    public function accueil(SortieRepository $sortieRepository): Response
-    {
-        return $this->render('sortie/admin.html.twig', [
-            'sorties' => $sortieRepository->findAll(),
-        ]);
-    }
+
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
@@ -72,7 +64,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
@@ -91,16 +83,5 @@ class SortieController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/{id}", name="delete", methods={"POST"})
-     */
-    public function delete(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$sortie->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($sortie);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
-    }
 }
