@@ -72,7 +72,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/admin/{id}/edit", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
@@ -92,7 +92,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"POST"})
+     * @Route("/admin/{id}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {

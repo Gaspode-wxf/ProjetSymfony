@@ -27,6 +27,6 @@ class MainController extends AbstractController
      */
     public function accueilConnecte(): Response
     {
-        return $this->redirectToRoute('sortie_accueil');
+        return $this->redirectToRoute('sortie_index');
     }
 }
