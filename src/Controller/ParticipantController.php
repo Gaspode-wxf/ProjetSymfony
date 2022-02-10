@@ -7,8 +7,10 @@ use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -69,7 +71,7 @@ class ParticipantController extends AbstractController
     {
         if ($participant->getId() != $this->getUser()->getId())
         {
-            return $this->redirectToRoute('sortie_index');
+            throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException('petit malin');
         }else
 
         $form = $this->createForm(ParticipantType::class, $participant);
