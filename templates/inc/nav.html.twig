@@ -1,9 +1,11 @@
 <nav class="navbar shadow-lg bg-base-300 text-neutral-content rounded-box justify-around ">
 
         {% if app.user("ROLE_USER") %}
-                <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
-                <a class="btn-sm" id="lien" href="{{ path('participant_modifier',{'id':app.user.id}) }}" title="modifier profil">Modifier profil</a>
-                <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">Créer une sortie</a>
+            <a class="btn-sm" id="lien" href="{{ path('sortie_index') }}" title="ListSortie">Liste des sorties</a>
+            <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">Créer une sortie</a>
+            <a class="btn-sm" id="lien" href="{{ path('participant_modifier',{'id':app.user.id}) }}" title="modifier profil">Modifier profil</a>
+            <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
+
 
                 {% if is_granted("ROLE_ADMIN")%}
                         <a class="btn-sm" id="lien" href="{{ path('ville_new') }}" title="aouter ville">Villes</a>
