@@ -62,11 +62,11 @@
         </tbody>
     </table>
 
-{#{% if app.user == sortie.organisateur and sortie.etat.libelle == 'En création' %}
+{% if app.user == sortie.organisateur and sortie.etat.libelle == 'En création' %}
 
     <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">edit</a>
 
-    {% endif %}#}
+    {% endif %}
 {% if app.user not in sortie.participants %}
 
     {{ include('sortie/_inscription_form.html.twig') }}
@@ -74,6 +74,7 @@
         {{ include('sortie/_desinscription_form.html.twig') }}
 {% endif %}
     {{ include('sortie/_delete_form.html.twig') }}
+
     {% if app.user == sortie.organisateur and (sortie.etat.libelle == 'En création' or sortie.etat.libelle == 'Ouverte') %}
         {{ include('sortie/_annuler_form.html.twig') }}
     {% endif %}
