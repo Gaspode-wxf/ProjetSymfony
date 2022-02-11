@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
-use App\Repository\SortieRepository;
+
+use App\Service\SortieUpdate;
+
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +19,11 @@ class MainController extends AbstractController
     /**
      * @Route("", name="home")
      */
-    public function home(): Response
+    public function home(SortieUpdate $sortieUpdate, EntityManagerInterface $entityManager): Response
     {
+
+        $sortieUpdate->updateSorties($entityManager);
+
         if($this->getUser())
         {
 

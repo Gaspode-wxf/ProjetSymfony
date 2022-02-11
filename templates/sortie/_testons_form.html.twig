@@ -1,0 +1,18 @@
+<form method="post"  action="{{ path('sortie_testons',{'id':sortie.id}) }}" onsubmit="return confirm('Voulez vous tester ce bouton ?');">
+
+    <input type="text" id="truc" name="texteTruc">
+
+    <label>
+        <input type="checkbox" value="ok" name="orga"  />
+        Sorties dont je suis l'organisateur/trice<br >
+        <input type="checkbox" value="ok" name="inscrit"/>
+        Sorties auxquelles je suis inscrit/e<br >
+        <input type="checkbox" value="ok" name="pas inscrit"/>
+        Sorties auxquelles je ne suis pas inscrit/e<br >
+        <input type="checkbox" value="ok" name="perime"/>
+        Sorties passées<br >
+
+    </label>
+
+    <button class="btn">Test</button>
+</form>

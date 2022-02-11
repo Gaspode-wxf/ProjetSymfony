@@ -3,6 +3,9 @@
 {% block title %}Sortie{% endblock %}
 
 {% block body %}
+
+    {{ include('sortie/_testons_form.html.twig') }}
+
     <h1 class="text-3xl text-center">{{ sortie.nom }}</h1>
 
     <table class="table p-4 mx-auto">
