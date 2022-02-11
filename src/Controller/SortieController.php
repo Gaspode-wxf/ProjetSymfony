@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
@@ -54,34 +55,52 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET", "POST"})
      */
     public function show(Sortie $sortie): Response
     {
-        return $this->render('sortie/show.html.twig', [
-            'sortie' => $sortie,
+        return $this->render('sortie/show.html.twig',[
+            'sortie' => $sortie
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/inscription/{id}", name="inscription", methods={"POST"})
      */
-    public function edit(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+    public function inscriptionSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(SortieType::class, $sortie);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->isCsrfTokenValid('inscription' . $sortie->getId(), $request->request->get('_token'))) {
+            $participant = $this->getUser();
+            $sortie->addParticipant($participant);
+            $entityManager->persist($sortie);
+            $entityManager->persist($participant);
             $entityManager->flush();
-
-            return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('sortie/edit.html.twig', [
-            'sortie' => $sortie,
-            'form' => $form,
-        ]);
+
+            return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
+        /**
+         * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+         */
+        public
+        function edit(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+        {
+            $form = $this->createForm(SortieType::class, $sortie);
+            $form->handleRequest($request);
 
-}
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->flush();
+
+                return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->renderForm('sortie/edit.html.twig', [
+                'sortie' => $sortie,
+                'form' => $form,
+            ]);
+        }
+
+
+    }

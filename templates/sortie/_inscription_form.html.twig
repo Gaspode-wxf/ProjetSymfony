@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('sortie_inscription', {'id': sortie.id}) }}" onsubmit="return confirm('Voulez-vous vous inscrire à cette sortie ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('inscription' ~ sortie.id) }}">
+    <button class="btn">Inscription</button>
+</form>
+
