@@ -14,17 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("", name="accueil_deconecte")
+     * @Route("", name="home")
      */
-    public function accueilDeconnecte(): Response
+    public function home(): Response
     {
+        if($this->getUser())
+        {
+
+            return $this->redirectToRoute('sortie_index');
+        }
         return $this->redirectToRoute('app_login');
-    }
-    /**
-     * @Route("accueil/conecte", name="accueil_conecte")
-     */
-    public function accueilConnecte(): Response
-    {
-        return $this->redirectToRoute('sortie_index');
     }
 }
