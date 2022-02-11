@@ -4,16 +4,15 @@
             <a class="btn-sm" id="lien" href="{{ path('sortie_index') }}" title="ListSortie">Accueil</a>
             <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">Créer une sortie</a>
             <a class="btn-sm" id="lien" href="{{ path('participant_modifier',{'id':app.user.id}) }}" title="modifier profil">Modifier profil</a>
+            {% if is_granted("ROLE_ADMIN")%}
+                <a class="btn-sm" id="lien" href="{{ path('admin_index') }}" title="Accès Admin">Accès Admin</a>
+
+            {% endif %}
+
             <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
 
 
-                {% if is_granted("ROLE_ADMIN")%}
-                        <a class="btn-sm" id="lien" href="{{ path('ville_new') }}" title="aouter ville">Villes</a>
-                        <a class="btn-sm" id="lien" href="{{ path('campus_new') }}" title="ajouter campus">Campus</a>
-                        <a class="btn-sm" id="lien" href="{{ path('app_register') }}" title="ajouter utilisateur">Inscrire utilisateur</a>
-                        <a class="btn-sm" id="lien" href="{{ path('admin_index') }}" title="Accès Admin">Accès Admin</a>
 
-                {% endif %}
         {% else %}
         <a class="btn-sm" id="lien" href="{{ path('app_login') }}" title="TEMP - Vue Accueil Deconnecte / Page de connexion">Accueil</a>
 
