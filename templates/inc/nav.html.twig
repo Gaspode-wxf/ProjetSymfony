@@ -2,7 +2,6 @@
 
         {% if app.user("ROLE_USER") %}
             <a class="btn-sm" id="lien" href="{{ path('sortie_index') }}" title="ListSortie">Accueil</a>
-            <a class="btn-sm" id="lien" href="{{ path('sortie_new') }}" title="CreateSortie">Créer une sortie</a>
             <a class="btn-sm" id="lien" href="{{ path('participant_modifier',{'id':app.user.id}) }}" title="modifier profil">Modifier profil</a>
             {% if is_granted("ROLE_ADMIN")%}
                 <a class="btn-sm" id="lien" href="{{ path('admin_index') }}" title="Accès Admin">Accès Admin</a>
