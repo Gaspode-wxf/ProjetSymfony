@@ -65,7 +65,7 @@
 
     {% endif %}#}
 {% if app.user not in sortie.participants %}
-    pas encore inscrit
+
     {{ include('sortie/_inscription_form.html.twig') }}
     {% else %}
         {{ include('sortie/_desinscription_form.html.twig') }}

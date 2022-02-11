@@ -78,7 +78,49 @@ class SortieController extends AbstractController
         }
 
 
-            return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/desinscription/{id}", name="desinscription", methods={"POST"})
+     */
+    public function desinscriptionSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('desinscription' . $sortie->getId(), $request->request->get('_token'))) {
+            $participant = $this->getUser();
+
+
+            $sortie->removeParticipant($participant);
+            $entityManager->persist($sortie);
+            $entityManager->persist($participant);
+            $entityManager->flush();
+        }
+
+
+        return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+    /**
+     * @Route("/annuler/{id}", name="annuler", methods={"POST"})
+     */
+    public function annulerSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('annuler' . $sortie->getId(), $request->request->get('_token'))) {
+
+            // solution temporaire pour récupérer l'etat.
+            // TODO ajouter une methode dans le Repo Etat pour trouver un état par libelle
+            $etats = $entityManager->getRepository('App:Etat')->findAll();
+
+
+
+
+            $sortie->setEtat($etats[4]);
+            $entityManager->persist($sortie);
+
+            $entityManager->flush();
+        }
+
+
+        return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
         /**
