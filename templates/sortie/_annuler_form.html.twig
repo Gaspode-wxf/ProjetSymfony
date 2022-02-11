@@ -1,0 +1,4 @@
+<form method="post" action="" onsubmit="return confirm('Voulez vous Annuler cette sortie ? Mais en vrai ce bouton ne fait rien');">
+    <input type="hidden" name="_token" value="{{ csrf_token('annuler' ~ sortie.id) }}">
+    <button class="btn">Annuler</button>
+</form>
