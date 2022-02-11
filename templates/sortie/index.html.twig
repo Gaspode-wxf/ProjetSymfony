@@ -52,7 +52,11 @@
                 <td>{{ sortie.infosSortie }}</td>
                 <td>
                     <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
+                    {#
+                     A remettre quand on aura corrigé la vue. Trop sensible de la laisser en l'état
                     <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">modifier</a>
+
+                    #}
                 </td>
             </tr>
         {% else %}
