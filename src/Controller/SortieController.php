@@ -130,13 +130,12 @@ class SortieController extends AbstractController
          */
         public function edit(Request $request,
                              Sortie $sortie,
-                             Participant $participant,
                              EntityManagerInterface $entityManager): Response
         {
-           if ($sortie->getId() != $this->getUser()->getId()){
+           if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId()){
             throw $this->createAccessDeniedException();
 
-            }else
+ 0           }else
 
             $form = $this->createForm(SortieType::class, $sortie);
             $form->handleRequest($request);
