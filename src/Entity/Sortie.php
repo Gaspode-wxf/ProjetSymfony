@@ -3,15 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use App\Validator\Sortie\DateDebut;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
  */
 class Sortie
 {
+
+    public string $message = 'Cette saisie "{{ value }}" est non valide.';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -21,31 +26,50 @@ class Sortie
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nom;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan(
+     *     "today",
+     *     message="La date ne peut pas être antérieure à la date du jour")
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *     min="1", max="24",
+     *     minMessage="Au moins une heure",
+     *     maxMessage="Une sortie de plus de 24 heures ?")
      */
     private $duree;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Expression(
+     *     "this.getDateHeureDebut() < this.getDateLimiteInscription()",
+     *     message="La date d'inscription ne peut pas être antérieure à la date de début"
+     * )
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *     min="1", max="100",
+     *     minMessage="Vous n'allez pas faire une sortie seul ?",
+     *     maxMessage="Ca fait beaucoup de gens, non ?")
      */
     private $nbInscriptionsMax;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=5, max=255,
+     *     minMessage="5 caractères minimum, décrivez la sortie",
+     *     maxMessage="Décrivez la sortie de façon succinte")
      */
     private $infosSortie;
 
@@ -77,6 +101,7 @@ class Sortie
      * @ORM\JoinColumn(nullable=false)
      */
     private $etat;
+
 
     public function __construct()
     {
