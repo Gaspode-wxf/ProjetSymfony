@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\rechercheData;
 use App\Entity\Etat;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -47,6 +48,40 @@ public function listeSortieParEtat(Etat $etat)
         ->getResult()
         ;
 }
+
+public function listeParSelectionEtat(string $listeEtat = ''){
+    //traiter un formulaire vide
+    if($listeEtat!==''){
+        //on récupère la chaine de carractère d'un formulaire de filtrage
+
+        $tableauSelection = explode(',', $listeEtat);
+
+
+        //on instancie une nouvelle requette
+        $request = $this->createQueryBuilder('sortie');
+        foreach ($tableauSelection as $selection) {
+            $request->andWhere('sortie.etat = :val')->setParameter('val', $selection);
+        }
+        return $request->orderBy('sortie.id','ASC')->getQuery()->getResult();
+    }
+
+        else return [] ;
+    }
+    public function rechercher(rechercheData $recherche)
+    {
+        $query = $this
+            ->createQueryBuilder('s');
+        if (!empty($recherche->champRecherche)) {
+            $query = $query
+                ->andWhere('s.nom LIKE : recherche')
+                ->setParameter('recherche', "%{$recherche->champRecherche}%");}
+        //if (!empty($recherche->orga)) {
+        //  $query->andWhere('s.organisateur LIKE : "%{$participant->id}%");
+        //}
+
+        return $query->getQuery()->getResult();
+
+    }
 
     /*
     public function findOneBySomeField($value): ?Sortie

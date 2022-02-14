@@ -4,18 +4,7 @@
 
 {% block body %}
     <h1>Accueil</h1>
-
-    <label>
-        <input type="checkbox" />
-        Sorties dont je suis l'organisateur/trice<br >
-        <input type="checkbox"/>
-        Sorties auxquelles je suis inscrit/e<br >
-        <input type="checkbox"/>
-        Sorties auxquelles je ne suis pas inscrit/e<br >
-        <input type="checkbox"/>
-        Sorties passées<br >
-        <button type="submit" class="btn">rechercher</button>
-    </label>
+    {% include 'sortie/_testons_form.html.twig' %}
 
     {% for message in app.flashes('succes') %}
         <div class="flash-succes">
