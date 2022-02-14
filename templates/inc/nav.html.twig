@@ -7,8 +7,10 @@
                 <a class="btn-sm" id="lien" href="{{ path('admin_index') }}" title="Accès Admin">Accès Admin</a>
 
             {% endif %}
+            <form method="post" action="{{ path('app_logout') }}" onclick="return confirm('Voulez-vous vous déconnecter ?');">
+                <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
+            </form>
 
-            <a class="btn-sm" id="lien" href="{{ path('app_logout') }}" title="Deconnexion">Déconnexion</a>
 
 
 
