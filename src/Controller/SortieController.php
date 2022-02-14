@@ -136,15 +136,22 @@ class SortieController extends AbstractController
          */
         public function edit(Request $request,
                              Sortie $sortie,
-                             EntityManagerInterface $entityManager,
+                             EntityManagerInterface $entityManager
                             ): Response
         {
-            $etatSortie = new Etat();
-            $etatSortie= $entityManager->getRepository('App:Etat')->find($sortie->getEtat()->getId());
-            dd($etatSortie);
-           if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId() and
-           $sortie->getEtat()->getId()!= 2)
+            $entityManager->initializeObject($sortie->getEtat());
+            $enCrea = $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'En création']);
+
+           $etatSortie = $sortie->getEtat();
+$entityManager->persist($etatSortie);
+$entityManager->persist($enCrea);
+
+
+
+           if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId() or
+           $etatSortie!=$enCrea)
            {
+
 
             throw $this->createAccessDeniedException();
 

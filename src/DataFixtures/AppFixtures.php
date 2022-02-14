@@ -127,7 +127,7 @@ class AppFixtures extends Fixture
             $lieu[$i]->setVille($ville[$faker->numberBetween($min = 0, $max = count($ville) - 1)]);
             $manager->persist($lieu[$i]);
         }
-        $sortie = [];
+        /*$sortie = [];
 
         for ($i = 0; $i < 20; $i++) {
             $sortie[$i] = new Sortie();
@@ -273,7 +273,16 @@ class AppFixtures extends Fixture
             }
 
             $manager->persist($sortie[$i]);
+        }*/
+
+        //creation de sorties Ouvertes
+        $sorties = [];
+        for ($ii = 0; $ii<20; $ii++){
+            $sorties[$ii] = new Sortie();
         }
+
+
+
 
         //creer un administrateur
         $admin = new Participant();
