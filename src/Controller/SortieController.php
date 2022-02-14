@@ -129,19 +129,22 @@ class SortieController extends AbstractController
     }
 
         /**
-         * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+         * @Route("/{id}/edit", name="edit", methods={"GET", "POST"}, requirements={"id":"\d+"})
          */
         public function edit(Request $request,
                              Sortie $sortie,
                              EntityManagerInterface $entityManager): Response
         {
            if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId()){
+
             throw $this->createAccessDeniedException();
 
             }else
+               $form = $this->createForm(SortieType::class, $sortie);
+               $form->handleRequest($request);
 
-            $form = $this->createForm(SortieType::class, $sortie);
-            $form->handleRequest($request);
+
+
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager->flush();
