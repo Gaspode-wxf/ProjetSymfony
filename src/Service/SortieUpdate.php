@@ -2,60 +2,144 @@
 
 namespace App\Service;
 
+use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class SortieUpdate
 {
 
     private $etats;
     private $sorties;
-    private $sortiesOuvertes;
+    private $sortiesCloturees;
+    private $sortiesEnCours;
     private $repoEtat;
     private $repoSortie;
 
 
+
     public function __construct(EtatRepository $etatRepository, SortieRepository $sortieRepository)
     {
+        //affectation des repo
         $this->repoSortie=$sortieRepository;
         $this->repoEtat=$etatRepository;
-        $this->etats=$this->repoEtat->findAll();
         $this->sorties=$this->repoSortie->findAll();
+        $this->etats=$this->repoEtat->findAll();
+
+
+        ;
     }
 
-    public function updateSorties(EntityManagerInterface $entityManager):void
-    {
-        //etape 1 chercher les sorties qui sont Ouvertes
-        $etatOuvert = $this->repoEtat->findOneBy(['libelle'=>'Ouverte']);
-        $sortiesOuvertes = $this->repoSortie->findBy(['etat'=>$etatOuvert]);
-        $sortiesPerimees = [];
 
-        //etape 2 générer la date du jour
+    public function ajouterHeures(int $val, \DateTimeInterface $dateTime):\DateTime
+    {
+       return (clone $dateTime)->add(new \DateInterval("PT".$val."H"));
+
+    }
+
+    public function moisProchain(\DateTimeInterface $dateTime):\DateTime
+    {
+        return (clone $dateTime)->add(new \DateInterval("P1M"));
+    }
+
+
+
+    public function historiserSorties(EntityManagerInterface $entityManager):void
+    {
+
+        //Générer la date du jour
         $now = new \DateTime();
 
-        //etape 3 comparer chaque date d'une sortie ouverte avec la date du jour
-        foreach ($sortiesOuvertes as $sortie)
+        // Historiser les sorties de plus d'un mois
+        foreach ($this->sorties as $sortie)
         {
-            if ($sortie->getDateHeureDebut() < $now)
+            if ($sortie->getEtat()!='Activité historisée'
+                and ($now < $this->moisProchain($sortie->getDateHeureDebut())))
             {
-               array_push($sortiesPerimees,$sortie);
+                $sortie->setEtat($this->repoEtat->findOneBy(['libelle'=>'Activité historisée']));
+                $entityManager->persist($sortie);
             }
-
-            foreach ($sortiesPerimees as $perimee)
-            {
-                $etatTerminee = $this->repoEtat->findOneBy(['libelle'=>'Activité terminée']);
-                $perimee->setEtat($etatTerminee);
-
-                $entityManager->persist($perimee);
-
-
-
-            }
-            $entityManager->flush();
-
         }
+        $entityManager->flush();
+
 
     }
+
+    public function cloturerSorties(EntityManagerInterface $entityManager):void
+    {
+        //Générer la date du jour
+        $now = new \DateTime();
+
+        $sortiesOuvertes = $this->repoSortie->findBy(['etat'=>$this->repoEtat->findOneBy(['libelle'=>'Ouverte'])]);
+
+        foreach ($sortiesOuvertes as $ouverte)
+        {
+            if ($now>=$ouverte->getDateLimiteInscription())
+            {
+                $ouverte->setEtat($this->repoEtat->findOneBy(['libelle'=>'Clôturée']));
+                $entityManager->persist($ouverte);
+            }
+        }
+        $entityManager->flush();
+    }
+
+    public function updateVersEnCoursEtTerminees(EntityManagerInterface $entityManager):void
+    {
+        //Générer la date du jour
+        $now = new \DateTime();
+
+        $sortiesOuvertes = $this->repoSortie->findBy(['etat'=>$this->repoEtat->findOneBy(['libelle'=>'Ouverte'])]);
+        $sortiesCloturees = $this->repoSortie->findBy(['etat'=>$this->repoEtat->findOneBy(['libelle'=>'Clôturées'])]);
+
+        $sortiesOuvrables  = array_merge($sortiesOuvertes,$sortiesCloturees);
+
+        foreach ($sortiesOuvrables as $ouvrable)
+        {
+            if ($ouvrable->getDateHeureDebut()<=$now and $now <= $this->ajouterHeures($ouvrable->getDuree(),$ouvrable->getDateHeureDebut()))
+            {
+                $ouvrable->setEtat($this->repoEtat->findOneBy(['libelle'=>'Activité en Cours']));
+                $entityManager->persist($ouvrable);
+            }
+            elseif ($this->ajouterHeures($ouvrable->getDuree(),$ouvrable->getDateHeureDebut())<$now)
+            {
+                $ouvrable->setEtat($this->repoEtat->findOneBy(['libelle'=>'Activité terminée']));
+                $entityManager->persist($ouvrable);
+            }
+        }
+        $entityManager->flush();
+
+    }
+
+    public function terminerSortieEnCours(EntityManagerInterface $entityManager):void
+    {
+        //Générer la date du jour
+        $now = new \DateTime();
+
+        $sortiesEnCours = $this->repoSortie->findBy(['etat'=>$this->repoEtat->findOneBy(['libelle'=>'Activité en cours'])]);
+
+        foreach ($sortiesEnCours as $enCour)
+        {
+            if ($this->ajouterHeures($enCour->getDuree(), $enCour->getDateHeureDebut())<$now)
+            {
+                $enCour->setEtat($this->repoEtat->findOneBy(['libelle'=>'Activité terminée']));
+                $entityManager->persist($enCour);
+            }
+        }
+
+        $entityManager->flush();
+
+    }
+
+    public function updateSorties(EntityManagerInterface $entityManager):bool
+    {
+        $this->historiserSorties($entityManager);
+        $this->terminerSortieEnCours($entityManager);
+        $this->updateVersEnCoursEtTerminees($entityManager);
+        $this->cloturerSorties($entityManager);
+        return true;
+    }
+
 
 }

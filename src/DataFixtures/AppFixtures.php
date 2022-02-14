@@ -11,9 +11,17 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Participant;
 use Faker;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
@@ -266,6 +274,20 @@ class AppFixtures extends Fixture
 
             $manager->persist($sortie[$i]);
         }
+
+        //creer un administrateur
+        $admin = new Participant();
+        $password = $this->hasher->hashPassword($admin,'123456');
+        $admin->setPseudo('admin')
+            ->setCampus($campus[0])
+            ->setEmail('admin@admin.admin')
+            ->setPrenom('admin')
+            ->setNom('admin')
+            ->setTelephone('08656565')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setPassword($password);
+
+        $manager->persist($admin);
 
         $manager->flush();
     }
