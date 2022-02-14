@@ -275,15 +275,6 @@ class AppFixtures extends Fixture
             $manager->persist($sortie[$i]);
         }*/
 
-        //creation de sorties Ouvertes
-        $sorties = [];
-        for ($ii = 0; $ii<20; $ii++){
-            $sorties[$ii] = new Sortie();
-        }
-
-
-
-
         //creer un administrateur
         $admin = new Participant();
         $password = $this->hasher->hashPassword($admin,'123456');
@@ -297,6 +288,30 @@ class AppFixtures extends Fixture
             ->setPassword($password);
 
         $manager->persist($admin);
+        $manager->flush();
+
+
+        //creation de sorties Ouvertes
+        $sorties = [];
+        for ($i = 0; $i<60; $i++){
+            $sorties[$i] = new Sortie();
+            $sorties[$i]->setNom('Sortie numero : '.($i+1))
+                ->setDuree(1)
+                ->setInfosSortie('Info Sortie numero :'.($i+1))
+                ->setLieu($lieu[0])
+                ->setSiteOrganisateur($campus[0])
+                ->setEtat($etat[2])
+                ->setDateHeureDebut($faker->dateTimeInInterval($startDate = '- 60 days', $interval = '+70 day', $timezone = null))
+                ->setDateLimiteInscription($sorties[$i]->getDateHeureDebut())
+                ->setOrganisateur($admin)
+                ->setNbInscriptionsMax(2);
+            $manager->persist($sorties[$i]);
+        }
+
+
+
+
+
 
         $manager->flush();
     }
