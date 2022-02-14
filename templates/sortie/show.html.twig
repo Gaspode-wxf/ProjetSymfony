@@ -4,7 +4,6 @@
 
 {% block body %}
 
-    {{ include('sortie/_testons_form.html.twig') }}
 
     <h1 class="text-3xl text-center">{{ sortie.nom }}</h1>
 
@@ -62,9 +61,10 @@
         </tbody>
     </table>
 
+    <p>{{ sortie.etat.libelle }}</p>
 {% if app.user == sortie.organisateur and sortie.etat.libelle == 'En création' %}
 
-{{ include('sortie/edit.html.twig') }}
+    <a href={{ path('sortie_edit', {'id':sortie.id}) }}>Modifier</a>
 
 
     {% endif %}

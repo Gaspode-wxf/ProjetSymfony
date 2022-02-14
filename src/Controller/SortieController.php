@@ -11,6 +11,7 @@ use App\Repository\SortieRepository;
 use App\Repository\SortieRepositoryParWilliam;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Client\Curl\User;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +49,8 @@ class SortieController extends AbstractController
             $sortie->setOrganisateur($this->getUser());
             $sortie->setSiteOrganisateur($user->getCampus());
             $entityManager->persist($sortie);
+            $sortie->getEtat()->addSorty($sortie);
+            $entityManager->persist($sortie->getEtat());
             $entityManager->flush();
 
             return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
@@ -129,13 +132,19 @@ class SortieController extends AbstractController
     }
 
         /**
-         * @Route("/{id}/edit", name="edit", methods={"GET", "POST"}, requirements={"id":"\d+"})
+         * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
          */
         public function edit(Request $request,
                              Sortie $sortie,
-                             EntityManagerInterface $entityManager): Response
+                             EntityManagerInterface $entityManager,
+                            ): Response
         {
-           if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId()){
+            $etatSortie = new Etat();
+            $etatSortie= $entityManager->getRepository('App:Etat')->find($sortie->getEtat()->getId());
+            dd($etatSortie);
+           if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId() and
+           $sortie->getEtat()->getId()!= 2)
+           {
 
             throw $this->createAccessDeniedException();
 
