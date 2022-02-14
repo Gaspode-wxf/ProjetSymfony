@@ -17,6 +17,12 @@
         <button type="submit" class="btn">rechercher</button>
     </label>
 
+    {% for message in app.flashes('succes') %}
+        <div class="flash-succes">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <table class="table">
         <thead>
             <tr>

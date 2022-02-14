@@ -163,10 +163,15 @@ $entityManager->persist($enCrea);
 
 
             if ($form->isSubmitted() && $form->isValid()) {
+
                 $entityManager->flush();
+
+                $this->addFlash('succes', 'La sortie a bien été modifiée');
 
                 return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
             }
+
+
 
             return $this->renderForm('sortie/edit.html.twig', [
                 'sortie' => $sortie,
