@@ -12,7 +12,7 @@ class SortieUpdate
 {
 
     private $etats;
-    private $sorties;
+
     private $sortiesCloturees;
     private $sortiesEnCours;
     private $repoEtat;
@@ -25,7 +25,7 @@ class SortieUpdate
         //affectation des repo
         $this->repoSortie=$sortieRepository;
         $this->repoEtat=$etatRepository;
-        $this->sorties=$this->repoSortie->findAll();
+
         $this->etats=$this->repoEtat->findAll();
 
 
@@ -48,20 +48,25 @@ class SortieUpdate
 
     public function historiserSorties(EntityManagerInterface $entityManager):void
     {
-
+        $sorties=$this->repoSortie->findAll();
         //Générer la date du jour
         $now = new \DateTime();
-
+$compteur=0;
         // Historiser les sorties de plus d'un mois
-        foreach ($this->sorties as $sortie)
+        foreach ($sorties as $sortie)
         {
-            if ($sortie->getEtat()!='Activité historisée'
-                and ($now < $this->moisProchain($sortie->getDateHeureDebut())))
+
+            if ($sortie->getEtat()!==$this->repoEtat->findOneBy(['libelle'=>'Activité historisée']) and ( ($now < $this->moisProchain($sortie->getDateHeureDebut()))) )
+
             {
+
+
                 $sortie->setEtat($this->repoEtat->findOneBy(['libelle'=>'Activité historisée']));
                 $entityManager->persist($sortie);
+                $compteur++;
             }
         }
+/*        dd($compteur);*/
         $entityManager->flush();
 
 
@@ -135,9 +140,9 @@ class SortieUpdate
     public function updateSorties(EntityManagerInterface $entityManager):bool
     {
         $this->historiserSorties($entityManager);
-        $this->terminerSortieEnCours($entityManager);
-        $this->updateVersEnCoursEtTerminees($entityManager);
-        $this->cloturerSorties($entityManager);
+        /* $this->terminerSortieEnCours($entityManager);
+         $this->updateVersEnCoursEtTerminees($entityManager);
+         $this->cloturerSorties($entityManager);*/
         return true;
     }
 

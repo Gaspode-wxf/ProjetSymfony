@@ -6,7 +6,9 @@ use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use App\Repository\SortieRepositoryParWilliam;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,10 +25,11 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(SortieRepository $sortieRepository): Response
+    public function index(SortieRepositoryParWilliam $sortieRepository, EtatRepository $etatRepository): Response
     {
+
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->listeSortiesOuvertes(),
+            'sorties' => $sortieRepository->listeSortieOuvertes($etatRepository, $this->getUser())
         ]);
     }
 
@@ -135,7 +138,7 @@ class SortieController extends AbstractController
            if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId()){
             throw $this->createAccessDeniedException();
 
- 0           }else
+            }else
 
             $form = $this->createForm(SortieType::class, $sortie);
             $form->handleRequest($request);
