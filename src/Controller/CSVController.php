@@ -23,8 +23,9 @@ class CSVController extends AbstractController
 if ($form->isSubmitted())
 {
     $csvFile = $form->get('csv')->getData();
-    $CSVService->readCSV($csvFile);
-    dd($csvFile);
+    if (!empty($csvFile)) {
+        $CSVService->readCSV($csvFile);
+    }
 }
         return $this->renderForm('csv/index.html.twig', [
             'form'=>$form,
