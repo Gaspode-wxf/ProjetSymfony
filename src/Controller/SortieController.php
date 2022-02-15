@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Data\rechercheData;
 use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\FiltresSortiesType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
@@ -185,6 +187,21 @@ $entityManager->persist($enCrea);
                 'form' => $form,
             ]);
         }
+    /**
+     * @Route("/filtre", name="filtre", methods={"GET"})
+     * @param SortieRepository $sortieRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function filtre(SortieRepository $sortieRepository, Request $request)
+    {
+        $data = new rechercheData();
+        $form = $this->createForm(FiltresSortiesType::class, $data);
+        $form->handleRequest($request);
+        $sorties = $sortieRepository->rechercher($data);
+        return $this->render('sortie/filtre.html.twig', [
+            'sorties' => $sorties,
+            'form' => $form->createView()
+        ]);}
 
-
-    }
+}
