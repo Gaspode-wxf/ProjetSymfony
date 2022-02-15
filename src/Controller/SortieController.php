@@ -82,6 +82,11 @@ class SortieController extends AbstractController
             $sortie->addParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->persist($participant);
+            if ($sortie->getParticipants()->count()==$sortie->getNbInscriptionsMax())
+            {
+                $cloture = $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'Clôturée']);
+                $sortie->setEtat($cloture);
+            }
             $entityManager->flush();
         }
 
@@ -101,6 +106,8 @@ class SortieController extends AbstractController
             $sortie->removeParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->persist($participant);
+            $ouverture = $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'Ouverte']);
+            $sortie->setEtat($ouverture);
             $entityManager->flush();
         }
 
