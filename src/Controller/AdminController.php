@@ -128,6 +128,22 @@ public function delete(Request $request, Ville $ville, EntityManagerInterface $e
         return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    /**
+     * @Route("/sortie/{id}", name="annuler")
+     */
+    public function annulerSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+    {
+
+        if ($this->isCsrfTokenValid('annuler'.$sortie->getId(), $request->request->get('_token')))
+        {
+            $etat = $entityManager->getRepository('App:Etat')->findAll();
+            $sortie->setEtat($etat[5]);
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
 
     /*
  *  Routes pour Sortie
