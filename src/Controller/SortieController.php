@@ -28,11 +28,26 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(SortieRepositoryParWilliam $sortieRepository, EtatRepository $etatRepository): Response
+    public function index(SortieRepositoryParWilliam $sortieRepository,
+                          EtatRepository $etatRepository,
+                          EntityManagerInterface $entityManager,
+                          Request $request): Response
     {
+        $data = new rechercheData();
+        $form = $this->createForm(FiltresSortiesType::class, $data);
+        $form->handleRequest($request);
+        $sorties = $entityManager->getRepository('App:Sortie')->rechercher($data, $this->getUser());
+
+      //  return $this->render('sortie/index.html.twig', [
+        //    'sorties' => $sorties,
+          //  'form' => $form->createView(),
+
+        //]);}
 
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->listeSortieOuvertes($etatRepository, $this->getUser())
+            'sorties' => $sorties,
+             'form'=> $form->createView(),
+
         ]);
     }
 
@@ -187,21 +202,6 @@ $entityManager->persist($enCrea);
                 'form' => $form,
             ]);
         }
-    /**
-     * @Route("/filtre", name="filtre", methods={"GET"})
-     * @param SortieRepository $sortieRepository
-     * @param Request $request
-     * @return Response
-     */
-    public function filtre(SortieRepository $sortieRepository, Request $request)
-    {
-        $data = new rechercheData();
-        $form = $this->createForm(FiltresSortiesType::class, $data);
-        $form->handleRequest($request);
-        $sorties = $sortieRepository->rechercher($data);
-        return $this->render('sortie/filtre.html.twig', [
-            'sorties' => $sorties,
-            'form' => $form->createView()
-        ]);}
+
 
 }

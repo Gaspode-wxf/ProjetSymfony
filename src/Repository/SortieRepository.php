@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Data\rechercheData;
 use App\Entity\Etat;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -67,17 +68,19 @@ public function listeParSelectionEtat(string $listeEtat = ''){
 
         else return [] ;
     }
-    public function rechercher(rechercheData $recherche)
+    public function rechercher(rechercheData $recherche, Participant $participant)
     {
+
         $query = $this
-            ->createQueryBuilder('s');
+            ->createQueryBuilder('sortie');
         if (!empty($recherche->champRecherche)) {
             $query = $query
-                ->andWhere('s.nom LIKE : recherche')
-                ->setParameter('recherche', "%{$recherche->champRecherche}%");}
-        //if (!empty($recherche->orga)) {
-        //  $query->andWhere('s.organisateur LIKE : "%{$participant->id}%");
-        //}
+                ->andWhere('sortie.nom LIKE :recherche')
+                ->setParameter('recherche', '%'.$recherche->champRecherche.'%');}
+        if (!empty($recherche->orga)) {
+          $query->andWhere('sortie.organisateur = :participant')
+              ->setParameter('participant', $participant->getId());
+        }
 
         return $query->getQuery()->getResult();
 

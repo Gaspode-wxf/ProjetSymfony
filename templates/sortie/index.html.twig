@@ -7,7 +7,7 @@
 
 
 
-    {% include 'sortie/filtre.html.twig' %}
+    {{  include ('sortie/filtre.html.twig') }}
 
     {% for message in app.flashes('succes') %}
         <div class="flash-succes">
