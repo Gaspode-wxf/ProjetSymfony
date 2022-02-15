@@ -51,9 +51,11 @@ class FiltresSortiesType extends AbstractType
                 ],])
             ->add('dateMin', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
             ])
         ->add('dateMax', DateType::class, [
-        'widget' => 'single_text',
+            'widget' => 'single_text',
+            'required' => false,
     ]);
     }
 
