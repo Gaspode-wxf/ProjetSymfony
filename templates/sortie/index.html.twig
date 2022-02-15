@@ -3,7 +3,10 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block body %}
-    <h1>Accueil</h1>
+
+
+
+
     {% include 'sortie/_testons_form.html.twig' %}
 
     {% for message in app.flashes('succes') %}
@@ -11,9 +14,9 @@
             {{ message }}
         </div>
     {% endfor %}
-
-    <table class="table mx-auto">
-        <thead>
+<div class="overflow-auto h-60">
+    <table class="table mx-auto ">
+        <thead class="bg-white">
             <tr>
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
@@ -28,25 +31,17 @@
         </thead>
         <tbody>
         {% for sortie in sorties %}
-            <tr>
-                <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
-
-
-
-
-
-
-
-
-                <td>{{ sortie.participants.count}} / {{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.etat.libelle }}</td>
+        <tr>
+        <td>{{ sortie.nom }}</td>
+        <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
+        <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
+        <td>{{ sortie.participants.count}} / {{ sortie.nbInscriptionsMax }}</td>
+        <td>{{ sortie.etat.libelle }}</td>
                 <td><a class="link" href="{{ path('participant_show', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur.nom}}</a></td>
                 <td> {% if app.user in sortie.participants %} oui {% else %} non {% endif%} </td>
                 <td>{{ sortie.infosSortie }}</td>
-                <td>
-                    <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
+        <td>
+                <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
                     {#
                      A remettre quand on aura corrigé la vue. Trop sensible de la laisser en l'état
                     <a href="{{ path('sortie_edit', {'id': sortie.id}) }}">modifier</a>
@@ -61,5 +56,9 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
+
     <button class="btn"><a href="{{ path('sortie_new') }}">Créer une nouvelle sortie</a></button>
+
+
 {% endblock %}
