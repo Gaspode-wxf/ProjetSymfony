@@ -43,21 +43,22 @@ class FiltresSortiesType extends AbstractType
             ])
             ->add('campus', ChoiceType::class, [
                 'choices'  => [
+                    'Tous les campus' => 'Tous les campus',
                     'SAINT-HERBLAIN' => 'SAINT-HERBLAIN',
                     'CHARTRES DE BRETAGNE' => 'CHARTRES DE BRETAGNE',
                     'LA ROCHE SUR YON' => 'LA ROCHE SUR YON',
                 ],])
         ;
-       // $builder->add('dateInterval', DateIntervalType::class, [
-       //     'widget'      => 'integer', // render a text field for each part
-       //     // 'input'    => 'string',  // if you want the field to return a ISO 8601 string back to you
-//
+        $builder->add('dateInterval', DateIntervalType::class, [
+            'widget'      => 'integer', // render a text field for each part
+            // 'input'    => 'string',  // if you want the field to return a ISO 8601 string back to you
+
             // customize which text boxes are shown
-  //          'with_years'  => false,
-  //          'with_months' => false,
-  //          'with_days'   => true,
-  //          'with_hours'  => true,
-  //      ]);
+            'with_years'  => false,
+            'with_months' => false,
+            'with_days'   => true,
+            'with_hours'  => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
