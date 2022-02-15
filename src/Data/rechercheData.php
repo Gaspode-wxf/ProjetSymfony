@@ -2,7 +2,9 @@
 
 namespace App\Data;
 
+use App\Entity\Campus;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Validator\Constraints\Date;
 
 class rechercheData
 {
@@ -12,23 +14,33 @@ class rechercheData
     public string $champRecherche = "";
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $orga = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $inscrit = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $pasInscrit = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public bool $perime = false;
+
+    /**
+     * @var Campus|null
+     */
+    public Campus $campus;
+
+  //  /**
+  //   * @var Date
+  //   */
+  //  public Date $dateInterval = null;
 
 }
