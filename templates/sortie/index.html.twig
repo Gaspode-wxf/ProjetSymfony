@@ -12,16 +12,16 @@
         </div>
     {% endfor %}
 
-    <table class="table">
+    <table class="table mx-auto">
         <thead>
             <tr>
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
                 <th>clôture</th>
-                <th>Nombre inscrits</th>
                 <th>Inscrits/Places</th>
                 <th>Etat</th>
                 <th>Organisateur</th>
+                <th>Inscrit ?</th>
                 <th>Infos Sortie</th>
                 <th>actions</th>
             </tr>
@@ -33,17 +33,17 @@
                 <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
 
-                <td> {{ sortie.participants.count}} </td>
 
 
 
 
 
 
-                <td>{{ sortie.nbInscriptionsMax }}</td>
+
+                <td>{{ sortie.participants.count}} / {{ sortie.nbInscriptionsMax }}</td>
                 <td>{{ sortie.etat.libelle }}</td>
                 <td><a class="link" href="{{ path('participant_show', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur.nom}}</a></td>
-                {# Afficher ok si la personne est inscrite #}
+                <td> {% if app.user in sortie.participants %} oui {% else %} non {% endif%} </td>
                 <td>{{ sortie.infosSortie }}</td>
                 <td>
                     <a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>

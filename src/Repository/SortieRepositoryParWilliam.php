@@ -54,6 +54,32 @@ public function listeSortieParEtat(Etat $etat)
         ;
 }
 
+public function listeParSelectionEtat(string $listeEtat = "")
+{
+    //traiter un formulaire vide
+
+    if ($listeEtat!=="")
+    {
+        //on récupère la chaine de caractère d'un formulaire de filtrage
+        $tableauSelection = explode(',',$listeEtat);
+        //on instancie une nouvelle requete
+        $requete = $this->createQueryBuilder('sortie');
+
+        foreach ($tableauSelection as $selection)
+        {
+            $requete->andWhere('sortie.etat = :val')
+                ->setParameter('val', $selection);
+        }
+        return $requete->orderBy('sortie.id','ASC')
+            ->getQuery()
+            ->getResult();
+
+    }else return [];
+
+
+
+}
+
     /*
     public function findOneBySomeField($value): ?Sortie
     {
