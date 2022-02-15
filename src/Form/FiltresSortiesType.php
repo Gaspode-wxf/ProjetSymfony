@@ -28,17 +28,17 @@ class FiltresSortiesType extends AbstractType
             ->add('orga', CheckboxType::class, [
                 'label' => "Sorties dont je suis l'organisateur",
                 'required' => false,
-                'attr' => ['checked'=>'checked'],
+             //   'attr' => ['checked'=>'checked'],
             ])
             ->add('inscrit', CheckboxType::class, [
                 'label' => "Sorties auxquelles je suis inscrit/e",
                 'required' => false,
-                'attr' => ['checked'=>'checked'],
+              //  'attr' => ['checked'=>'checked'],
             ])
             ->add('pasInscrit', CheckboxType::class, [
                 'label' => "Sorties auxquelles je ne suis pas inscrit/e",
                 'required' => false,
-                'attr' => ['checked'=>'checked'],
+              //  'attr' => ['checked'=>'checked'],
             ])
             ->add('perime', CheckboxType::class, [
                 'label' => "Sorties passées",
@@ -47,7 +47,7 @@ class FiltresSortiesType extends AbstractType
             ->add('campus', EntityType::class,[
                 'class' => Campus::class,
                 'required'   => false,
-                'empty_data' => 'Tous les campus'
+              //  'empty_data' => 'Tous les campus'
             ])
          //           'Tous les campus' => 'Tous les campus',
             ->add('dateMin', DateType::class, [

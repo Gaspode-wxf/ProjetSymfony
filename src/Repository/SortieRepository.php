@@ -82,6 +82,24 @@ public function listeParSelectionEtat(string $listeEtat = ''){
               ->setParameter('participant', $participant->getId());
         }
 
+      //  if (!empty($recherche->inscrit))
+       // {
+         //   $query = $this->getEntityManager();
+
+           // $query->andWhere('sortie.participants  IN :sortie.id')
+            //->setParameter('participant', $participant->getId());
+       // }
+      //  if (!empty($recherche->pasInscrit))
+       //{
+         //   $query->andWhere('sortie.participants = false');
+
+        //}
+
+        if (!empty($recherche->campus))
+        {
+            $query->andWhere('sortie.siteOrganisateur = :campus')
+                ->setParameter('campus', $recherche->campus);
+        }
         return $query->getQuery()->getResult();
 
     }
