@@ -5,6 +5,7 @@ namespace App\Data;
 use App\Entity\Campus;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class rechercheData
 {
@@ -39,14 +40,14 @@ class rechercheData
     public Campus $campus;
 
     /**
-     * @var Date|null
+     * @var |null
      */
-    public Date $dateMin;
+    public $dateMin;
 
     /**
-     * @var Date|null
+     * @var |null
      */
-    public Date $dateMax;
+    public $dateMax;
 
 
 }

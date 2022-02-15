@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,13 +44,12 @@ class FiltresSortiesType extends AbstractType
                 'label' => "Sorties passées",
                 'required' => false,
             ])
-            ->add('campus', ChoiceType::class, [
-                'choices'  => [
-                    'Tous les campus' => 'Tous les campus',
-                    'SAINT-HERBLAIN' => 'SAINT-HERBLAIN',
-                    'CHARTRES DE BRETAGNE' => 'CHARTRES DE BRETAGNE',
-                    'LA ROCHE SUR YON' => 'LA ROCHE SUR YON',
-                ],])
+            ->add('campus', EntityType::class,[
+                'class' => Campus::class,
+                'required'   => false,
+                'empty_data' => 'Tous les campus'
+            ])
+         //           'Tous les campus' => 'Tous les campus',
             ->add('dateMin', DateType::class, [
                 'widget' => 'single_text',
                 'required' => false,
