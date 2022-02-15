@@ -38,9 +38,15 @@ class rechercheData
      */
     public Campus $campus;
 
-  //  /**
-  //   * @var Date
-  //   */
-  //  public Date $dateInterval = null;
+    /**
+     * @var Date|null
+     */
+    public Date $dateMin;
+
+    /**
+     * @var Date|null
+     */
+    public Date $dateMax;
+
 
 }
