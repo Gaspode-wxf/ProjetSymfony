@@ -1,3 +1,4 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block title %}Sortie index{% endblock %}
@@ -22,7 +23,9 @@
         <tbody>
         {% for app.user in sortie.participants %}
         <tr>
-            <td>{{ sortie.nom }}</td><a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
+            <td>{{ sortie.nom }}</td>#}
+{#<a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>#}{#
+
             <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d-m-Y H:i:s') : '' }}</td>
             <td>{{ sortie.lieu }}</td>
             </tr>
@@ -36,3 +39,6 @@
 </div>
 
 {% endblock %}
+#}
+
+

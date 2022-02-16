@@ -4,8 +4,13 @@
 
 {% block body %}
 
+{{ include('sortie/mobile/mobile.index.html.twig') }}
 
 
+
+
+
+    <div class="invisible md:visible">
 
     {{  include ('sortie/filtre.html.twig') }}
 
@@ -59,6 +64,8 @@
 </div>
 
     <button class="btn"><a href="{{ path('sortie_new') }}">Créer une nouvelle sortie</a></button>
+
+    </div>
 
 
 {% endblock %}
