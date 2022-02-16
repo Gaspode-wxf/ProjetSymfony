@@ -36,7 +36,7 @@ class rechercheData
 
 
     /**
-     * @var Campus|null
+     * @var Campus
      */
     public Campus $campus;
 
@@ -49,7 +49,5 @@ class rechercheData
      * @var |null
      */
     public $dateMax;
-
-
 
 }

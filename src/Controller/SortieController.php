@@ -35,6 +35,7 @@ class SortieController extends AbstractController
     {
         $data = new rechercheData();
         $data->dateMin = new \DateTime();
+        $data->campus = $this->getUser()->getCampus();
         $form = $this->createForm(FiltresSortiesType::class, $data);
         $form->handleRequest($request);
         $entityManager->initializeObject($this->getUser()->getSorties());

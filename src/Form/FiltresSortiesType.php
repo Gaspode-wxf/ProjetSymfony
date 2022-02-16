@@ -46,7 +46,6 @@ class FiltresSortiesType extends AbstractType
             ])
             ->add('campus', EntityType::class,[
                 'class' => Campus::class,
-                'required'   => false,
             ])
             ->add('dateMin', DateType::class, [
                 'label' => 'Entre',
