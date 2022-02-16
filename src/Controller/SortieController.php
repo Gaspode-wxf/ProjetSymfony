@@ -70,7 +70,7 @@ class SortieController extends AbstractController
             $sortie->setOrganisateur($this->getUser());
             $sortie->setSiteOrganisateur($user->getCampus());
             $entityManager->persist($sortie);
-            $sortie->getEtat()->addSorty($sortie);
+            $sortie->setEtat($entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'En création']));
             $entityManager->persist($sortie->getEtat());
             $entityManager->flush();
 

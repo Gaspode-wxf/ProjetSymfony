@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
-use App\Validator\Sortie\DateDebut;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -54,7 +53,7 @@ class Sortie
      *     message="La date ne peut pas être antérieure à la date du jour")
      * @Assert\Expression(
      *     "this.getDateHeureDebut() > this.getDateLimiteInscription()",
-     *     message="La date d'inscription ne peut pas être postérieure à la date de début"
+     *     message="La date d'inscription ne peut pas être postérieur à la date de début"
      * )
      */
     private $dateLimiteInscription;
