@@ -34,9 +34,12 @@ class SortieController extends AbstractController
                           Request $request): Response
     {
         $data = new rechercheData();
+        $data->dateMin = new \DateTime();
         $form = $this->createForm(FiltresSortiesType::class, $data);
         $form->handleRequest($request);
-        $sorties = $entityManager->getRepository('App:Sortie')->rechercher($data, $this->getUser());
+        $entityManager->initializeObject($this->getUser()->getSorties());
+        $listeSortie = $this->getUser()->getSorties();
+        $sorties = $entityManager->getRepository('App:Sortie')->rechercher($data, $this->getUser(), $listeSortie);
 
       //  return $this->render('sortie/index.html.twig', [
         //    'sorties' => $sorties,

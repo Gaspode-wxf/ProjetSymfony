@@ -17,9 +17,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $etatRepository;
+
+    public function __construct(ManagerRegistry $registry, EtatRepository $etatRepository)
     {
         parent::__construct($registry, Sortie::class);
+        $this->etatRepository=$etatRepository;
     }
 
      /**
@@ -68,38 +71,87 @@ public function listeParSelectionEtat(string $listeEtat = ''){
 
         else return [] ;
     }
-    public function rechercher(rechercheData $recherche, Participant $participant)
+    public function rechercher(rechercheData $recherche, Participant $participant, $sortiesParticipant)
     {
 
         $query = $this
-            ->createQueryBuilder('sortie');
+            ->createQueryBuilder('sortie')
+            ->andWhere('sortie.etat !=  :val1')
+            ->setParameter('val1', $this->etatRepository->findOneBy(['libelle'=>'Annulée']))
+            ->andWhere('sortie.etat !=  :val2')
+            ->setParameter('val2', $this->etatRepository->findOneBy(['libelle'=>'Activité historisée']));
+
         if (!empty($recherche->champRecherche)) {
             $query = $query
                 ->andWhere('sortie.nom LIKE :recherche')
                 ->setParameter('recherche', '%'.$recherche->champRecherche.'%');}
-        if (!empty($recherche->orga)) {
-          $query->andWhere('sortie.organisateur = :participant')
-              ->setParameter('participant', $participant->getId());
-        }
-
-      //  if (!empty($recherche->inscrit))
-       // {
-         //   $query = $this->getEntityManager();
-
-           // $query->andWhere('sortie.participants  IN :sortie.id')
-            //->setParameter('participant', $participant->getId());
-       // }
-      //  if (!empty($recherche->pasInscrit))
-       //{
-         //   $query->andWhere('sortie.participants = false');
-
-        //}
 
         if (!empty($recherche->campus))
         {
             $query->andWhere('sortie.siteOrganisateur = :campus')
                 ->setParameter('campus', $recherche->campus);
         }
+
+        $query->andWhere('sortie.dateHeureDebut >= :dateMin')
+            ->setParameter('dateMin', $recherche->dateMin);
+
+        if ($recherche->dateMax)
+        {
+            $query->andWhere('sortie.dateHeureDebut < :dateMax')
+                ->setParameter('dateMax', $recherche->dateMax);
+        }
+
+        if ($recherche->orga)
+        {
+            $query->andWhere('sortie.organisateur = :participant')
+                ->setParameter('participant', $participant->getId());
+        }
+
+        if (!$recherche->perime)
+        {
+            $query->andWhere('sortie.etat !=  :val3')
+            ->setParameter('val3', $this->etatRepository->findOneBy(['libelle'=>'Activité terminée']));
+        }
+
+        if ($recherche->inscrit and !$recherche->pasInscrit)
+        {
+            foreach ($participant->getSorties() as $sortie)
+            {
+                $query->andWhere('sortie.id = '.$sortie->getId());
+            }
+          //  dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
+        }
+
+        if ($recherche->pasInscrit and !$recherche->inscrit)
+        {
+            foreach ($participant->getSorties() as $sortie)
+            {
+                $query->andWhere('sortie.id != '.$sortie->getId());
+            }
+        }
+
+        if ($recherche->perime)
+        {
+            $query->andWhere('sortie.etat = :val4 ')
+                ->setParameter('val4', $this->etatRepository->findOneBy(['libelle'=>'Activité terminée']));
+        }
+
+
+        if (!$recherche->orga and !$recherche->inscrit and !$recherche->pasInscrit and !$recherche->perime)
+        {
+            dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
+
+        }
+
+        if ($recherche->orga and $recherche->inscrit and $recherche->pasInscrit and $recherche->perime)
+        {
+            dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
+
+        }
+
+
+
+       // dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
         return $query->getQuery()->getResult();
 
     }
