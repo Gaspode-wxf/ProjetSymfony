@@ -49,9 +49,12 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan(
+     *     "today",
+     *     message="La date ne peut pas être antérieure à la date du jour")
      * @Assert\Expression(
-     *     "this.getDateHeureDebut() < this.getDateLimiteInscription()",
-     *     message="La date d'inscription ne peut pas être antérieure à la date de début"
+     *     "this.getDateHeureDebut() > this.getDateLimiteInscription()",
+     *     message="La date d'inscription ne peut pas être postérieure à la date de début"
      * )
      */
     private $dateLimiteInscription;
