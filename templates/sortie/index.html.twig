@@ -33,8 +33,8 @@
         {% for sortie in sorties %}
         <tr>
         <td>{{ sortie.nom }}</td>
-        <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
-        <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
+        <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d-m-Y H:i:s') : '' }}</td>
+        <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d-m-Y H:i:s') : '' }}</td>
         <td>{{ sortie.participants.count}} / {{ sortie.nbInscriptionsMax }}</td>
         <td>{{ sortie.etat.libelle }}</td>
                 <td><a class="link" href="{{ path('participant_show', {'id': sortie.organisateur.id }) }}">{{ sortie.organisateur.nom}}</a></td>
