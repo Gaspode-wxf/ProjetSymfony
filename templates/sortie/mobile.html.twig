@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortie index{% endblock %}
+
+{% block body %}
+
+    {% for message in app.flashes('succes') %}
+        <div class="flash-succes">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+<div class="overflow-auto h-60">
+    <table class="table mx-auto ">
+        <thead class="bg-white">
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Lieu</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for app.user in sortie.participants %}
+        <tr>
+            <td>{{ sortie.nom }}</td><a href="{{ path('sortie_show', {'id': sortie.id}) }}">show</a>
+            <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d-m-Y H:i:s') : '' }}</td>
+            <td>{{ sortie.lieu }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Aucune sortie trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
