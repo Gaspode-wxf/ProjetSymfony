@@ -1,0 +1,37 @@
+
+
+
+
+<div class="overflow-auto md:hidden">
+    <table class="table mx-auto ">
+        <thead class="bg-white">
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Lieu</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sortie in sorties %}
+        <tr>
+            <td><a class="link" href="{{ path('sortie_show', {'id': sortie.id}) }}">
+                    {{ sortie.nom }}
+                </a></td>
+
+<td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d-m-Y H:i:s') : '' }}
+</td>
+<td>{{ sortie.lieu.nom }}
+</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="8">Aucune sortie trouvé</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+
+
+

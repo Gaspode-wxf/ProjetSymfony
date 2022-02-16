@@ -54,6 +54,17 @@ class SortieController extends AbstractController
 
         ]);
     }
+    /**
+     *
+     * @Route ("/mobile")
+     */
+    public function mobile()
+    {
+
+        return $this->render('sortie/mobile/mobile.index.html.twig',[
+            ]
+        );
+    }
 
 
     /**
@@ -206,11 +217,6 @@ $entityManager->persist($enCrea);
                 'form' => $form,
             ]);
         }
-    /**
-     * @Route("/mobile", name="sortie_mobile", methods={"GET"})
-     */
-    public function mobile()
-    {
-        return $this->render('sortie/mobile.html.twig');
-    }
+
+
 }
