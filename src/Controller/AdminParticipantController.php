@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\AdminParticipantType;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,7 +45,7 @@ class AdminParticipantController extends AbstractController
      */
     public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ParticipantType::class, $participant);
+        $form = $this->createForm(AdminParticipantType::class, $participant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
