@@ -47,14 +47,14 @@ class FiltresSortiesType extends AbstractType
             ->add('campus', EntityType::class,[
                 'class' => Campus::class,
                 'required'   => false,
-              //  'empty_data' => 'Tous les campus'
             ])
-         //           'Tous les campus' => 'Tous les campus',
             ->add('dateMin', DateType::class, [
+                'label' => 'Entre',
                 'widget' => 'single_text',
                 'required' => false,
             ])
         ->add('dateMax', DateType::class, [
+            'label' => ' et',
             'widget' => 'single_text',
             'required' => false,
     ]);

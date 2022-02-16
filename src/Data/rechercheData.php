@@ -27,12 +27,13 @@ class rechercheData
     /**
      * @var bool
      */
-    public $pasInscrit = false;
+    public $pasInscrit = true;
 
     /**
      * @var bool
      */
     public bool $perime = false;
+
 
     /**
      * @var Campus|null
