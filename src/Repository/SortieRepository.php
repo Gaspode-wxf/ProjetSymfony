@@ -7,6 +7,7 @@ use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -101,12 +102,6 @@ public function listeParSelectionEtat(string $listeEtat = ''){
                 ->setParameter('dateMax', $recherche->dateMax);
         }
 
-        if ($recherche->orga)
-        {
-            $query->andWhere('sortie.organisateur = :participant')
-                ->setParameter('participant', $participant->getId());
-        }
-
         if (!$recherche->perime)
         {
             $query->andWhere('sortie.etat !=  :val3')
@@ -132,12 +127,28 @@ public function listeParSelectionEtat(string $listeEtat = ''){
 
         if ($recherche->perime)
         {
-            $query->andWhere('sortie.etat = :val4 ')
-                ->setParameter('val4', $this->etatRepository->findOneBy(['libelle'=>'Activité terminée']));
+            $query->leftJoin(
+                'sortie.etat',
+                'etat',
+                Join::WITH,
+                'etat ='.$this->etatRepository->findOneBy(['libelle'=>'Activité terminée'])->getId()
+            );
+
+            /*$query->andWhere('sortie.etat = :val4 ')
+                ->setParameter('val4', $this->etatRepository->findOneBy(['libelle'=>'Activité terminée']));*/
+        }
+
+        if ($recherche->orga)
+        {
+
+
+            $query->leftJoin('sortie.organisateur','organisateur',Join::WITH,'organisateur ='.$participant->getId());
+            /*$query->andWhere('sortie.organisateur = :participant')
+                ->setParameter('participant', $participant->getId());*/
         }
 
 
-        if (!$recherche->orga and !$recherche->inscrit and !$recherche->pasInscrit and !$recherche->perime)
+/*        if (!$recherche->orga and !$recherche->inscrit and !$recherche->pasInscrit and !$recherche->perime)
         {
             dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
 
@@ -147,14 +158,16 @@ public function listeParSelectionEtat(string $listeEtat = ''){
         {
             dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
 
-        }
+        }*/
 
 
 
-       // dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);
+/*       dd(['recherche'=>$recherche, 'requete'=>$query->getQuery(), 'resultats'=>$query->getQuery()->getResult()]);*/
         return $query->getQuery()->getResult();
 
     }
+
+
 
     /*
     public function findOneBySomeField($value): ?Sortie
