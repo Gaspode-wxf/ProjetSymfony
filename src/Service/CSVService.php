@@ -3,8 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Participant;
-use ContainerBjBKgG3\getCampusTypeService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -36,11 +34,12 @@ class CSVService
         foreach ($data as $ligne)
         {
 
+        $nom = $ligne['nom'];
 
 
             $user = new Participant();
-            $tempPass = $this->hasher->hashPassword($user,'Chan6e-M3');
-            $user->setNom($ligne['nom'])
+            $tempPass = $this->hasher->hashPassword($user,'123456');
+            $user->setNom($nom)
                 ->setPrenom($ligne['prenom'])
                 ->setPassword($tempPass)
                 ->setTelephone($ligne['telephone'])

@@ -1,3 +1,2 @@
-"id","campus_id","email","roles","password","nom","prenom","telephone","actif","pseudo"
-"155","1","test@test.test","[]","change-moi","NOM","PRENOM","06XXXXXXXX","1","blanchard.henri"
-"255","2","bob@bob.bob","["ROLE_ADMIN"]","change-moi","BOB","Bobby","06XXXXXXXX","1","alexandre19"
+"campus_id","email","nom","prenom","telephone"
+"1","lol@lol.lol","canard","donald","06XXXXXXXX"
