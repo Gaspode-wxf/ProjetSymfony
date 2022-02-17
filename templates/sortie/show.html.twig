@@ -110,8 +110,9 @@
 
     {% endif %}
 {% if app.user not in sortie.participants %}
-
+{% if  sortie.etat.libelle == 'Ouverte' %}
     {{ include('sortie/_inscription_form.html.twig') }}
+    {% endif %}
     {% else %}
         {{ include('sortie/_desinscription_form.html.twig') }}
 {% endif %}
