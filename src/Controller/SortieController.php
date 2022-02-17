@@ -11,6 +11,7 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Repository\SortieRepositoryParWilliam;
+use App\Service\SortieUpdate;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Client\Curl\User;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -28,11 +29,11 @@ class SortieController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(SortieRepositoryParWilliam $sortieRepository,
-                          EtatRepository $etatRepository,
+    public function index(SortieUpdate $sortieUpdate,
                           EntityManagerInterface $entityManager,
                           Request $request): Response
     {
+        $sortieUpdate->updateSorties($entityManager);
         $data = new rechercheData();
         $data->dateMin = new \DateTime();
         $data->campus = $this->getUser()->getCampus();
@@ -156,17 +157,24 @@ class SortieController extends AbstractController
             // solution temporaire pour récupérer l'etat.
             // TODO ajouter une methode dans le Repo Etat pour trouver un état par libelle
             $etats = $entityManager->getRepository('App:Etat')->findAll();
-
-
-
-
             $sortie->setEtat($etats[4]);
             $entityManager->persist($sortie);
-
             $entityManager->flush();
         }
+        return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+    /**
+     * @Route("/ouvrir/{id}", name="ouvrir", methods={"POST"})
+     */
+    public function OuvrirSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('ouvrir' . $sortie->getId(), $request->request->get('_token'))) {
 
-
+            /*dd($entityManager->getRepository('App:Etat')->findAll());*/
+            $sortie->setEtat($entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'Ouverte']));
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+        }
         return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
