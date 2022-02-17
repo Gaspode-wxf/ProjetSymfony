@@ -93,7 +93,8 @@ public function listeParSelectionEtat(string $listeEtat = ''){
                 ->setParameter('campus', $recherche->campus);
         }
 
-        $query->andWhere('sortie.dateHeureDebut >= :dateMin')
+        if($recherche->dateMin)
+            $query->andWhere('sortie.dateHeureDebut >= :dateMin')
             ->setParameter('dateMin', $recherche->dateMin);
 
         if ($recherche->dateMax)
