@@ -10,7 +10,7 @@
 
 
 
-    <div class="invisible md:visible">
+
 
     {{  include ('sortie/filtre.html.twig') }}
 
@@ -19,8 +19,8 @@
             {{ message }}
         </div>
     {% endfor %}
-<div class="overflow-auto h-60">
-    <table class="table mx-auto ">
+<div class="overflow-auto h-60 hidden md:block">
+    <table class="table md:mx-auto ">
         <thead class="bg-white">
             <tr>
                 <th>Nom de la sortie</th>
@@ -63,9 +63,9 @@
     </table>
 </div>
 
-    <button class="btn"><a href="{{ path('sortie_new') }}">Créer une nouvelle sortie</a></button>
+    <button class="btn invisible md:visible"><a href="{{ path('sortie_new') }}">Créer une nouvelle sortie</a></button>
 
-    </div>
+
 
 
 {% endblock %}

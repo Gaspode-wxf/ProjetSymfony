@@ -4,9 +4,48 @@
 
 {% block body %}
 
+    {# Vue mobile #}
+
+    <div class="md:hidden">
+        <li>Nom : {{ sortie.nom }}</li>
+        <li>Date et Heure : {{ sortie.dateHeureDebut|date('d-m-Y H:i') }}</li>
+        <li>Ville : {{ sortie.lieu.ville.nom }}</li>
+        <li>Lieu : {{ sortie.lieu.nom }}</li>
+        <li>Rue : {{ sortie.lieu.rue }}</li>
+        <li>Code Postal : {{ sortie.lieu.ville.codePostal }}</li>
+        <li>Latitude : {{ sortie.lieu.latitute }}</li>
+        <li>Longitude : {{ sortie.lieu.longitude }}</li>
+        <li>Clôture : {{ sortie.dateLimiteInscription|date('d-m-Y H:i') }}</li>
+        <li>Nombre de places : {{ sortie.nbInscriptionsMax }}</li>
+        <li>Durée : {{ sortie.duree*60 }} minutes</li>
+        <li>Infos : {{ sortie.infosSortie }}</li>
+
+        <div>Liste des inscrits
+            <table class="table-compact">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Ville</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if sortie.participants %}
+                {% for participant in sortie.participants %}
+                <tr>
+                    <td>{{ participant.nom }}</td>
+                    <td> {{ participant.campus.nom}} </td>
+                </tr>
+                </tbody>
+                {% endfor %}
+                {% endif %}
+
+            </table>
+        </div>
+
+    </div>
 
 
-
+<div class="hidden md:table md:mx-auto">
     <h1 class="text-3xl text-center">{{ sortie.nom }}</h1>
 
     <table class="table p-4 mx-auto">
@@ -84,5 +123,5 @@
     {% if is_granted("ROLE_ADMIN")%}
         {{ include('sortie/_annuler_form.html.twig') }}
     {% endif %}
-
+</div>
 {% endblock %}

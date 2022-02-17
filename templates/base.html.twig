@@ -18,14 +18,14 @@
 </head>
 <body class="container mx-auto m-10 border-base-300 border-8 rounded-box p-2 bg-neutral max-w-max">
 
-    <header class="container mb-2 rounded-box ">
-        <div class="container mb-2 flex items-center rounded-box">
+    <header class="mb-2 rounded-box ">
+        <div class="md:container mb-2 flex items-center rounded-box">
          {%  if app.user %}
             <a class="flex w-1/5 " href="{{ path("sortie_index") }}"><img src="{{ asset("image/logoEni.png") }}" alt="Sortir.com"></a>
             {% else %}
         <a class="flex w-1/5 " href="{{ path("app_login") }}"><img src="{{ asset("image/logoEni.png") }}" alt="Sortir.com"></a>
             {% endif %}
-        <h1 class="text-7xl w-4/5 text-center ">Sortir.com</h1>
+        <h1 class="hidden md:block text-7xl w-4/5 text-center ">Sortir.com</h1>
         </div>
        {% include ("inc/nav.html.twig") %}
     </header>
