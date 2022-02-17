@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use function PHPUnit\Framework\throwException;
 
 /**
@@ -110,8 +111,24 @@ class SortieController extends AbstractController
      */
     public function inscriptionSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('inscription' . $sortie->getId(), $request->request->get('_token'))) {
+        $peutSInscrire = false;
+        if ($this->isCsrfTokenValid('inscription' . $sortie->getId(), $request->request->get('_token')))
+        {
+
+
             $participant = $this->getUser();
+            foreach ($sortie->getParticipants() as $participantSortie)
+            {
+                if ($participant === $participantSortie or $sortie->getEtat()!== $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'Ouverte']))
+                {
+                    $peutSInscrire = true;
+                    break;
+                }
+            }
+            if ($peutSInscrire)
+            {
+                throw new AccessDeniedException("Tu crois pouvoir t'inscrire ?");
+            }
             $sortie->addParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->persist($participant);
@@ -170,7 +187,6 @@ class SortieController extends AbstractController
     {
         if ($this->isCsrfTokenValid('ouvrir' . $sortie->getId(), $request->request->get('_token'))) {
 
-            /*dd($entityManager->getRepository('App:Etat')->findAll());*/
             $sortie->setEtat($entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'Ouverte']));
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -178,53 +194,45 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
-        /**
+    /**
          * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
          */
-        public function edit(Request $request,
-                             Sortie $sortie,
-                             EntityManagerInterface $entityManager
-                            ): Response
+    public function edit(Request $request,Sortie $sortie, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->initializeObject($sortie->getEtat());
+        $enCrea = $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'En création']);
+        $etatSortie = $sortie->getEtat();
+        $entityManager->persist($etatSortie);
+        $entityManager->persist($enCrea);
+
+        if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId() or $etatSortie!=$enCrea)
         {
-            $entityManager->initializeObject($sortie->getEtat());
-            $enCrea = $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'En création']);
-
-           $etatSortie = $sortie->getEtat();
-$entityManager->persist($etatSortie);
-$entityManager->persist($enCrea);
-
-
-
-           if ($sortie->getOrganisateur()->getId() != $this->getUser()->getId() or
-           $etatSortie!=$enCrea)
-           {
 
 
             throw $this->createAccessDeniedException();
 
-            }else
-               $form = $this->createForm(SortieType::class, $sortie);
-               $form->handleRequest($request);
+        }else
+        {
+            $form = $this->createForm(SortieType::class, $sortie);
+            $form->handleRequest($request);
 
-
-
-
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                $entityManager->flush();
-
-                $this->addFlash('succes', 'La sortie a bien été modifiée');
-
-                return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
-            }
-
-
-
-            return $this->renderForm('sortie/edit.html.twig', [
-                'sortie' => $sortie,
-                'form' => $form,
-            ]);
         }
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+
+            $entityManager->flush();
+
+            $this->addFlash('succes', 'La sortie a bien été modifiée');
+
+            return $this->redirectToRoute('sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('sortie/edit.html.twig', [
+            'sortie' => $sortie,
+            'form' => $form,
+        ]);
+    }
 
 
 }
