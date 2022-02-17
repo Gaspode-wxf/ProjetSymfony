@@ -111,7 +111,7 @@ class SortieController extends AbstractController
      */
     public function inscriptionSortie(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
-        $isInscrit = false;
+        $peutSInscrire = false;
         if ($this->isCsrfTokenValid('inscription' . $sortie->getId(), $request->request->get('_token')))
         {
 
@@ -119,15 +119,15 @@ class SortieController extends AbstractController
             $participant = $this->getUser();
             foreach ($sortie->getParticipants() as $participantSortie)
             {
-                if ($participant === $participantSortie)
+                if ($participant === $participantSortie or $sortie->getEtat()!== $entityManager->getRepository('App:Etat')->findOneBy(['libelle'=>'Ouverte']))
                 {
-                    $isInscrit = true;
+                    $peutSInscrire = true;
                     break;
                 }
             }
-            if ($isInscrit)
+            if ($peutSInscrire)
             {
-                throw new AccessDeniedException("Tu crois pouvoir t'inscrire deux fois ?");
+                throw new AccessDeniedException("Tu crois pouvoir t'inscrire ?");
             }
             $sortie->addParticipant($participant);
             $entityManager->persist($sortie);
