@@ -1,0 +1,4 @@
+<form method="post"  action="{{ path('sortie_ouvrir', {'id': sortie.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('ouvrir' ~ sortie.id) }}">
+    <button class="btn">Ouvrir la sortie</button>
+</form>
